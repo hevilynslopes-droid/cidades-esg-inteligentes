@@ -1,0 +1,508 @@
+type: spec.insomnia.rest/5.0
+schema_version: "5.1"
+name: ESG Carbon Management
+meta:
+  id: wrk_c973d9a2e2484a309d8a333d785ef6f8
+  created: 1779448467187
+  modified: 1779484053997
+  description: ""
+collection:
+  - name: Auth (Login)
+    meta:
+      id: fld_f2e137b258fb44cf9a18ff7b5c4e4b64
+      created: 1779452834142
+      modified: 1779482574447
+      sortKey: -1779452834142
+      description: ""
+    children:
+      - url: "{{ base_url }}/auth/login"
+        name: Login Admin
+        meta:
+          id: req_7a005bfc86fc44b2ba7db4ec0d7c68df
+          created: 1779449433959
+          modified: 1779482553343
+          isPrivate: false
+          description: ""
+          sortKey: -1779453103213
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "admin@esg.com",
+              "senha": "admin123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        scripts:
+          afterResponse: |-
+            const response = insomnia.response.json();
+            insomnia.environment.set("token", response.token);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: "Agendamento "
+    meta:
+      id: fld_f2e401db66cb428abc2ee3389784e818
+      created: 1779452881254
+      modified: 1779474034772
+      sortKey: -1779452881254
+      description: ""
+    children:
+      - url: "{{ base_url }}/agendamento-reducao-carbono"
+        name: Listar Agendamentos de Redução
+        meta:
+          id: req_98f78a413b894fcba9b3a88449cb658f
+          created: 1779474039533
+          modified: 1779474090494
+          isPrivate: false
+          description: ""
+          sortKey: -1779474039533
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/agendamento-reducao-carbono"
+        name: Criar Agendamento de Redução
+        meta:
+          id: req_772e4ba1e4fe436c87eae664a57095d2
+          created: 1779474181626
+          modified: 1779483069109
+          isPrivate: false
+          description: ""
+          sortKey: -1779474181626
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+              "empresaId": 41,
+              "titulo": "Substituição de Frota Diesel por Elétrica",
+              "descricao": "Substituição gradual de 30% da frota por veículos elétricos até dezembro",
+              "metaReducaoTco2e": 50.0000,
+              "dataInicio": "2026-06-01",
+              "dataFimPrevista": "2026-12-31"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/agendamento-reducao-carbono/{{ agendamento_id }}"
+        name: Atualizar Agendamento De Redução
+        meta:
+          id: req_9707bd7834294749b225646d13cc1f41
+          created: 1779477615761
+          modified: 1779477693973
+          isPrivate: false
+          description: ""
+          sortKey: -1779477615761
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "titulo": "Substituição de Frota Diesel por Elétrica - Revisado",
+              "descricao": "Meta ampliada para 50% da frota substituída",
+              "metaReducaoTco2e": 75.0000,
+              "status": "EM_ANDAMENTO",
+              "dataFimPrevista": "2027-03-31"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/agendamento-reducao-carbono/4"
+        name: Cancelar Agendamento
+        meta:
+          id: req_f333ee1614df410b90ea09d405e4b182
+          created: 1779477810126
+          modified: 1779483169266
+          isPrivate: false
+          description: ""
+          sortKey: -1779477810126
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Empresas
+    meta:
+      id: fld_ed94b47c055645e182b0107ce003184e
+      created: 1779452901123
+      modified: 1779453681311
+      sortKey: -1779452901123
+      description: ""
+    children:
+      - url: "{{ base_url }}/empresas-sustentaveis"
+        name: Listar Empresas
+        meta:
+          id: req_84a75c181a34490fbebcc2242de03cd7
+          created: 1779452323880
+          modified: 1779455201694
+          isPrivate: false
+          description: ""
+          sortKey: -1779453664083
+        method: GET
+        parameters:
+          - name: page
+            value: "0"
+            description: ""
+            disabled: false
+          - name: size
+            value: "10"
+            description: ""
+            disabled: false
+          - name: sort
+            value: nome
+            description: ""
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/empresas-sustentaveis"
+        name: Cadastrar Empresa
+        meta:
+          id: req_d4771fbbc0cd49638d775b84a36269f0
+          created: 1779453635670
+          modified: 1779482636936
+          isPrivate: false
+          description: ""
+          sortKey: -1779453663983
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Azul Solar S.A.",
+              "cnpj": "48.765.590/0001-10",
+              "setor": "Energia Renovável",
+              "pais": "Brasil"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/emissoes-carbono"
+        name: Listar Emissões de Carbono
+        meta:
+          id: req_7a91e1bcdf224435a48a04f38b75c88e
+          created: 1779453825917
+          modified: 1779455284333
+          isPrivate: false
+          description: ""
+          sortKey: -1779453825917
+        method: GET
+        parameters:
+          - name: page
+            value: "0"
+            description: ""
+            disabled: false
+          - name: size
+            value: "10"
+            description: ""
+            disabled: false
+          - name: sort
+            value: dataEmissao
+            description: ""
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/relatorio-emissao"
+        name: Registrar Relatório de Emissão
+        meta:
+          id: req_cbafa42cbc584488a37d265ef7fd655d
+          created: 1779454339978
+          modified: 1779482739029
+          isPrivate: false
+          description: ""
+          sortKey: -1779454339978
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "empresaId": 41,
+              "quantidadeTco2e": 234.5000,
+              "escopo": "ESCOPO_1",
+              "descricao": "Emissões diretas da frota de veículos",
+              "dataEmissao": "2026-05-22"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/historico-emissoes/1"
+        name: Histórico de Emissões por Empresa
+        meta:
+          id: req_921dceedda8e4bb7ad2b9ae0d70a6c99
+          created: 1779454476517
+          modified: 1779483009662
+          isPrivate: false
+          description: ""
+          sortKey: -1779454476517
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Compensação
+    meta:
+      id: fld_555b4dcd59e54322a26d6364625f489a
+      created: 1779452925406
+      modified: 1779478136819
+      sortKey: -1779452925406
+      description: ""
+    children:
+      - url: "{{ base_url }}/compensacao-carbono"
+        name: Cadastrar Compensação
+        meta:
+          id: req_fefefb65a1ac411d9d6699748e328b95
+          created: 1779478138023
+          modified: 1779483250092
+          isPrivate: false
+          description: ""
+          sortKey: -1779478138023
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+              "empresaId": 41,
+              "tipo": "REFLORESTAMENTO",
+              "quantidadeTco2e": 630.0000,
+              "descricao": "Plantio de 6547 árvores nativas no Cerrado brasileiro",
+              "certificadoUrl": "https://certificados.esg.com.br/ref-2026-001",
+              "dataCompensacao": "2026-05-20"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Indicadores
+    meta:
+      id: fld_6f555ab58d2942ed900ed147dda3926f
+      created: 1779478282986
+      modified: 1779478282986
+      sortKey: -1779478282986
+      description: ""
+    children:
+      - url: "{{ base_url }}/indicadores-sustentabilidade"
+        name: Indicadores Gerais
+        meta:
+          id: req_925c8ac15d0c4393a8b6864766f03398
+          created: 1779478288289
+          modified: 1779478369058
+          isPrivate: false
+          description: ""
+          sortKey: -1779478288289
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ base_url }}/impacto-mitigacao/3"
+        name: Impacto de Mitigação
+        meta:
+          id: req_407da27eb5204956b832e14aab62f796
+          created: 1779478420670
+          modified: 1779478599092
+          isPrivate: false
+          description: ""
+          sortKey: -1779478420670
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_1c2ad67aa955609742260ab2116ceb460593a40c
+    created: 1779448467194
+    modified: 1779482574447
+environments:
+  name: Base Environment
+  meta:
+    id: env_1c2ad67aa955609742260ab2116ceb460593a40c
+    created: 1779448467194
+    modified: 1779482574447
+    isPrivate: false
+  data:
+    base_url: http://localhost:8080/api/v1
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBlc2cuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzc5NDgyNTc0LCJleHAiOjE3Nzk1Njg5NzR9.WvJY8K5LK74QFz9UzGjV1g0zp_tGHOC0iSjbtI_tt5lS9m6N0hDyuK6CCcfUaaeI0NcDr8RJ_tZZ4okYcK2RCA
+    empresa_id: 1
+    agendamento_id: 1
+    impacto_id: 1
+spec:
+  meta:
+    id: spc_fab0a26d46034bf984f02c12805c525e
+    created: 1779448467193
+    modified: 1779484053996
