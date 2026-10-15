@@ -122,12 +122,12 @@ Workflow: [`.github/workflows/ci-cd.yml`](.github/workflows/ci-cd.yml). O workfl
 
 ### Secrets necessários
 
-Crie os seguintes secrets nas configurações do repositório/ambiente GitHub. Não coloque valores reais no YAML.
+Crie os seguintes secrets nas configurações do environment GitHub correspondente. `GHCR_READ_TOKEN` deve permitir leitura da imagem no GHCR para o servidor remoto. Ative os deploys somente depois de configurar os hosts. Detalhes em [`docs/CONFIGURACAO_GITHUB_E_DEPLOY.md`](docs/CONFIGURACAO_GITHUB_E_DEPLOY.md). Não coloque valores reais no YAML.
 
 | Ambiente | Secrets |
 |---|---|
-| `staging` | `STAGING_HOST`, `STAGING_USER`, `STAGING_SSH_KEY`, `STAGING_PATH` |
-| `production` | `PRODUCTION_HOST`, `PRODUCTION_USER`, `PRODUCTION_SSH_KEY`, `PRODUCTION_PATH` |
+| `staging` | `STAGING_HOST`, `STAGING_USER`, `STAGING_SSH_KEY`, `STAGING_PATH`, `GHCR_READ_TOKEN` |
+| `production` | `PRODUCTION_HOST`, `PRODUCTION_USER`, `PRODUCTION_SSH_KEY`, `PRODUCTION_PATH`, `GHCR_READ_TOKEN` |
 
 O workflow usa `GITHUB_TOKEN` para publicar a imagem no GHCR. Além dos secrets por ambiente, configure em **Settings → Secrets and variables → Actions → Variables** as variáveis `ENABLE_STAGING_DEPLOY=true` e/ou `ENABLE_PRODUCTION_DEPLOY=true` somente depois de preparar o respectivo servidor. O servidor remoto precisa ter Docker Engine, Compose v2, `curl`, diretório de deploy gravável pelo usuário SSH e arquivo `.env` local com `ORACLE_PASSWORD`, `APP_USER`, `APP_USER_PASSWORD` e `JWT_SECRET`. O usuário remoto precisa ter permissão para executar Docker. Mantenha staging e produção em hosts/dados separados.
 
