@@ -24,7 +24,7 @@ Secrets de produção (no environment `production`):
 - `PRODUCTION_USER`
 - `PRODUCTION_SSH_KEY`
 - `PRODUCTION_PATH`
-- `GHCR_READ_TOKEN`
+
 
 Configure aprovação obrigatória para o environment `production`. Nunca coloque os valores dos secrets no código, nos arquivos versionados ou em mensagens de chat.
 
@@ -41,8 +41,8 @@ Restringir permissões do arquivo (por exemplo, `chmod 600 .env`). Staging e pro
 ## 4. Executar e validar
 - Push na branch `main`: build/testes e publicação da imagem; staging só executa se habilitado por variável e secrets.
 - Para produção: Actions → CI/CD - Cidades ESG Inteligentes → Run workflow → marcar `deploy_production`; produção só executa se habilitada e após aprovação do environment, quando configurada.
-- O workflow consulta `http://127.0.0.1:8080/api/v1/actuator/health` no servidor por até cinco minutos.
+- O workflow consulta `http://127.0.0.1:8080/api/v1/auth/login` no servidor por até cinco minutos e considera uma resposta HTTP 2xx, 3xx ou 4xx como sinal de que a API respondeu. Isso é uma verificação básica de disponibilidade, não um teste funcional completo.
 - Após cada execução, registrar evidências reais da aba Actions, imagem GHCR e teste funcional. Health check confirma disponibilidade básica, não todos os comportamentos da API.
 
 ## 5. Estado real
-O código do pipeline está preparado, mas os deploys não são considerados concluídos até que os hosts, secrets, variáveis e verificações pós-deploy tenham sido executados. Não use screenshots simuladas como evidência.
+A execução [run #16](https://github.com/hevilynslopes-droid/cidades-esg-inteligentes/actions/runs/38787510204) foi concluída com sucesso para build/testes e publicação da imagem GHCR. Os jobs de staging e produção foram ignorados porque os hosts e secrets não estão configurados. Os deploys não são considerados concluídos até que hosts, secrets, variáveis e verificações pós-deploy tenham sido executados. Não use screenshots simuladas como evidência.
