@@ -41,7 +41,7 @@ carbono-api/
 
 - Docker Desktop / Docker Engine com Docker Compose v2
 - Git (opcional)
-- Java 21 e Maven Wrapper para executar testes fora do container
+- Java 21 e Maven 3.9+ para executar testes fora do container
 
 ### Preparar ambiente
 
@@ -97,13 +97,13 @@ docker compose down -v
 Com Java 21 instalado:
 
 ```bash
-./mvnw -B clean verify
+mvn -B clean verify
 ```
 
 No Windows:
 
 ```powershell
-.\mvnw.cmd -B clean verify
+mvn -B clean verify
 ```
 
 O perfil `test` usa H2 em memória e desabilita Flyway para que o teste de contexto não dependa de uma instância Oracle. Isso não substitui testes de integração contra Oracle; esses testes devem ser executados separadamente antes de uma publicação de produção.
