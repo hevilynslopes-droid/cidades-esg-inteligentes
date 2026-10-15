@@ -39,7 +39,7 @@ O Compose de deploy usa imagem versionada no GHCR e mantém a porta do Oracle fo
 
 A etapa automatizada executa Maven Verify e armazena os relatórios Surefire. O teste existente verifica o carregamento do contexto Spring e foi isolado com perfil `test`, H2 em memória e Flyway desabilitado. Esse teste é uma validação inicial, não substitui testes unitários por serviço/controller nem testes de integração contra Oracle. A coleção Insomnia permite executar verificações manuais dos endpoints.
 
-**Resultado da validação nesta preparação:** a execução local de `./mvnw -B clean verify` foi tentada, mas o Maven Wrapper não conseguiu baixar a distribuição Maven do repositório Maven Central no ambiente de preparação. Portanto, não é possível afirmar que os testes passaram. A execução deve ser repetida em ambiente com acesso ao Maven Central e Docker.
+**Resultado verificado em 15/10/2026:** o workflow GitHub Actions [run #16](https://github.com/hevilynslopes-droid/cidades-esg-inteligentes/actions/runs/38787510204) terminou com sucesso. O job `Build e testes automatizados` executou `mvn -B clean verify` com sucesso e publicou o relatório Surefire. O job de construção/publicação da imagem Docker no GHCR também terminou com sucesso. Os jobs de deploy para staging e produção foram ignorados (skipped), pois a hospedagem e os secrets ainda não estão configurados. A execução bem-sucedida de CI não é evidência de deploy.
 
 ## 6. Segurança
 
@@ -79,7 +79,7 @@ Não foram inseridas imagens fictícias. No momento da geração deste documento
 - [x] Documentação do projeto e arquitetura.
 - [x] `.env.example` sem credenciais reais.
 - [x] Coleção Insomnia incluída.
-- [ ] Pipeline executado com sucesso no GitHub — exige publicação do repositório.
+- [x] Pipeline CI/CD executado com sucesso no GitHub: build/testes e publicação da imagem GHCR — [run #16](https://github.com/hevilynslopes-droid/cidades-esg-inteligentes/actions/runs/38787510204).
 - [ ] Staging implantado e testado — exige host e secrets.
 - [ ] Produção implantada e testada — exige host, secrets e aprovação.
 - [ ] Capturas reais anexadas — gerar depois das execuções.
