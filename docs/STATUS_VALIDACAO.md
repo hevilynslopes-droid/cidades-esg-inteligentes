@@ -7,7 +7,8 @@ Atualizado em 15/10/2026.
 - Branch principal: `main`.
 - O repositório contém código-fonte, Dockerfile, Compose, coleção Insomnia, relatório PDF e apresentação PPTX.
 - Uma execução anterior do workflow de CI simples foi concluída com sucesso em 14/10/2026. Essa execução confirma o build/testes daquele workflow, não confirma publicação de imagem nem deploy.
-- O workflow completo `.github/workflows/ci-cd.yml` foi adicionado para build/testes, publicação no GHCR e deploys condicionais. Sua nova execução deve ser conferida na aba Actions após o commit.
+- O workflow completo `.github/workflows/ci-cd.yml` foi adicionado para build/testes, publicação no GHCR e deploys condicionais.
+- A primeira execução do workflow novo identificou que o arquivo `mvnw` não tinha permissão de execução no Git; o workflow foi ajustado para executar `chmod +x ./mvnw` antes dos testes. A execução seguinte deve confirmar se essa correção é suficiente.
 
 ## Pendências externas
 - [ ] Confirmar que a execução do novo workflow CI/CD terminou com sucesso e que a imagem foi publicada no GHCR.
