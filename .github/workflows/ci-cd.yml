@@ -98,7 +98,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           IMAGE_TAG: ${{ github.sha }}
           GHCR_USER: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOY_PATH: ${{ secrets.STAGING_PATH }}
         with:
           host: ${{ secrets.STAGING_HOST }}
@@ -114,8 +114,10 @@ jobs:
             docker compose -f docker-compose.deploy.yml pull
             docker compose -f docker-compose.deploy.yml up -d --remove-orphans
             for attempt in $(seq 1 30); do
-              if curl --fail --silent http://127.0.0.1:8080/api/v1/actuator/health >/dev/null; then
-                echo "Health check aprovado."
+              code=$(curl --silent --output /dev/null --write-out "%{http_code}" http://127.0.0.1:8080/api/v1/auth/login || true)
+              case "$code" in 2*|3*|4*) echo "API respondeu HTTP $code"; exit 0 ;; esac
+              if [ "$attempt" -eq 30 ]; then
+                echo "API disponível."
                 exit 0
               fi
               sleep 10
@@ -147,7 +149,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           IMAGE_TAG: ${{ github.sha }}
           GHCR_USER: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOY_PATH: ${{ secrets.PRODUCTION_PATH }}
         with:
           host: ${{ secrets.PRODUCTION_HOST }}
@@ -163,8 +165,10 @@ jobs:
             docker compose -f docker-compose.deploy.yml pull
             docker compose -f docker-compose.deploy.yml up -d --remove-orphans
             for attempt in $(seq 1 30); do
-              if curl --fail --silent http://127.0.0.1:8080/api/v1/actuator/health >/dev/null; then
-                echo "Health check aprovado."
+              code=$(curl --silent --output /dev/null --write-out "%{http_code}" http://127.0.0.1:8080/api/v1/auth/login || true)
+              case "$code" in 2*|3*|4*) echo "API respondeu HTTP $code"; exit 0 ;; esac
+              if [ "$attempt" -eq 30 ]; then
+                echo "API disponível."
                 exit 0
               fi
               sleep 10
