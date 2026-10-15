@@ -1,20 +1,27 @@
 # Status de validação — Cidades ESG Inteligentes
 
-Atualizado em 15/10/2026.
+**Atualizado em 15/10/2026**
 
 ## Evidências verificadas
-- Repositório GitHub público: https://github.com/hevilynslopes-droid/cidades-esg-inteligentes
-- Branch principal: `main`.
-- O repositório contém código-fonte, Dockerfile, Compose, coleção Insomnia, relatório PDF e apresentação PPTX.
-- Uma execução anterior do workflow de CI simples foi concluída com sucesso em 14/10/2026. Essa execução confirma o build/testes daquele workflow, não confirma publicação de imagem nem deploy.
-- O workflow completo `.github/workflows/ci-cd.yml` foi adicionado para build/testes, publicação no GHCR e deploys condicionais.
-- A primeira execução do workflow novo identificou que o arquivo `mvnw` não tinha permissão de execução no Git; o workflow foi ajustado para executar `chmod +x ./mvnw` antes dos testes. A execução seguinte deve confirmar se essa correção é suficiente.
 
-## Pendências externas
-- [ ] Confirmar que a execução do novo workflow CI/CD terminou com sucesso e que a imagem foi publicada no GHCR.
-- [ ] Configurar servidor de staging, secrets e variável `ENABLE_STAGING_DEPLOY=true`; executar e verificar o health check.
-- [ ] Configurar servidor de produção, secrets e variável `ENABLE_PRODUCTION_DEPLOY=true`; exigir aprovação do environment `production` e executar manualmente.
-- [ ] Guardar capturas de tela reais da execução, da imagem e dos ambientes implantados.
+- Repositório público: https://github.com/hevilynslopes-droid/cidades-esg-inteligentes
+- Branch principal: `main`.
+- Execução do workflow CI/CD: https://github.com/hevilynslopes-droid/cidades-esg-inteligentes/actions/runs/38787510204
+- Run #16, commit `f7ec5099e2c412797d54f31d7627601e57d011ca`, concluído com resultado **success** em 15/10/2026.
+- Job `Build e testes automatizados`: sucesso. O comando `mvn -B clean verify` terminou com sucesso e o relatório Surefire foi publicado como artefato.
+- Job `Construir e publicar imagem no GHCR`: sucesso. A imagem foi construída e publicada com tag SHA e `latest`.
+- Jobs `Deploy em staging` e `Deploy em produção`: **skipped**. O projeto ainda não tem servidor configurado; esses ambientes não foram implantados.
+- Código-fonte, Dockerfile, Docker Compose, workflow, coleção Insomnia e documentação estão no repositório.
+
+## Pendências para concluir a implantação
+
+- [ ] Criar infraestrutura de hospedagem e validar disponibilidade/custo dos recursos.
+- [ ] Configurar environments `staging` e `production` no GitHub.
+- [ ] Cadastrar secrets SSH e arquivo `.env` seguro em cada host.
+- [ ] Habilitar `ENABLE_STAGING_DEPLOY=true` somente após staging estar pronto; executar e verificar a API.
+- [ ] Configurar aprovação obrigatória em `production`, habilitar `ENABLE_PRODUCTION_DEPLOY=true` apenas quando pronto, executar manualmente e validar.
+- [ ] Registrar capturas reais de staging/produção depois dos deploys.
 
 ## Limitações e segurança
-Os deploys de staging e produção não podem ser declarados concluídos sem acesso aos hosts e configuração de secrets. Não foram inventadas capturas de tela nem resultados de execução. Não versionar `.env`, chaves privadas, tokens ou senhas. Se credenciais de um arquivo `.env` anterior foram compartilhadas ou publicadas, rotacione-as.
+
+O CI e a publicação da imagem foram verificados; staging e produção não foram concluídos. Não foram inventadas credenciais nem capturas de tela. Não versionar `.env`, chaves privadas, tokens ou senhas. Se credenciais tiverem sido expostas anteriormente, rotacione-as.
