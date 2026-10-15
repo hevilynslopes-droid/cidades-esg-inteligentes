@@ -18,7 +18,6 @@ Secrets de staging (no environment `staging`):
 - `STAGING_USER`: usuário SSH.
 - `STAGING_SSH_KEY`: chave privada SSH dedicada.
 - `STAGING_PATH`: diretório de deploy já criado no servidor.
-- `GHCR_READ_TOKEN`: token com permissão de leitura de pacotes para o servidor baixar imagens.
 
 Secrets de produção (no environment `production`):
 - `PRODUCTION_HOST`
