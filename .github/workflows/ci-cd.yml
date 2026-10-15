@@ -98,7 +98,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           IMAGE_TAG: ${{ github.sha }}
           GHCR_USER: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
           DEPLOY_PATH: ${{ secrets.STAGING_PATH }}
         with:
           host: ${{ secrets.STAGING_HOST }}
@@ -147,7 +147,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           IMAGE_TAG: ${{ github.sha }}
           GHCR_USER: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
           DEPLOY_PATH: ${{ secrets.PRODUCTION_PATH }}
         with:
           host: ${{ secrets.PRODUCTION_HOST }}
