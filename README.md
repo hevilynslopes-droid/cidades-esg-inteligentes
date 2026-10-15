@@ -129,7 +129,7 @@ Crie os seguintes secrets nas configurações do environment GitHub corresponden
 | `staging` | `STAGING_HOST`, `STAGING_USER`, `STAGING_SSH_KEY`, `STAGING_PATH` |
 | `production` | `PRODUCTION_HOST`, `PRODUCTION_USER`, `PRODUCTION_SSH_KEY`, `PRODUCTION_PATH` |
 
-O workflow usa `GITHUB_TOKEN` para publicar a imagem no GHCR e autenticar o servidor durante o deploy. Além dos secrets por ambiente, configure em **Settings → Secrets and variables → Actions → Variables** as variáveis `ENABLE_STAGING_DEPLOY=true` e/ou `ENABLE_PRODUCTION_DEPLOY=true` somente depois de preparar o respectivo servidor. O servidor remoto precisa ter Docker Engine, Compose v2, `curl`, diretório de deploy gravável pelo usuário SSH e arquivo `.env` local com `ORACLE_PASSWORD`, `APP_USER`, `APP_USER_PASSWORD` e `JWT_SECRET`. O usuário remoto precisa ter permissão para executar Docker. Mantenha staging e produção em hosts/dados separados.
+O workflow usa `GITHUB_TOKEN` para publicar a imagem no GHCR e autenticar o servidor durante o deploy. Não é necessário cadastrar `GHCR_READ_TOKEN` para o fluxo atual. Além dos secrets por ambiente, configure em **Settings → Secrets and variables → Actions → Variables** as variáveis `ENABLE_STAGING_DEPLOY=true` e/ou `ENABLE_PRODUCTION_DEPLOY=true` somente depois de preparar o respectivo servidor. O servidor remoto precisa ter Docker Engine, Compose v2, `curl`, diretório de deploy gravável pelo usuário SSH e arquivo `.env` local com `ORACLE_PASSWORD`, `APP_USER`, `APP_USER_PASSWORD` e `JWT_SECRET`. O usuário remoto precisa ter permissão para executar Docker. Mantenha staging e produção em hosts/dados separados.
 
 > A etapa de staging está associada a push na branch `main`. Se o repositório usar `master`, ajuste a condição do job ou padronize a branch para `main`. A produção é disparada manualmente e deve ser protegida por aprovação do ambiente.
 
@@ -195,9 +195,9 @@ Evidências a registrar após executar o projeto:
 - [x] Coleção Insomnia incluída.
 - [x] Documentação de arquitetura e implantação incluída em `docs/`.
 - [x] Repositório público e workflow de CI anterior executado com sucesso.
-- [ ] Novo workflow CI/CD executado com build, testes e publicação da imagem GHCR — verificar em Actions após o commit.
+- [x] Workflow CI/CD executado com sucesso: build/testes e publicação da imagem GHCR. Evidência: https://github.com/hevilynslopes-droid/cidades-esg-inteligentes/actions/runs/38787510204.
 - [ ] Staging implantado e verificado — depende de host, secrets, variável `ENABLE_STAGING_DEPLOY` e execução real.
 - [ ] Produção implantada e verificada — depende de host, secrets, variável `ENABLE_PRODUCTION_DEPLOY` e aprovação.
 - [ ] Capturas de tela reais anexadas — gerar após execução dos ambientes.
 
-**Importante:** os itens não marcados dependem de infraestrutura, secrets e execução real. Não foram criadas capturas fictícias nem declarados deploys inexistentes.
+**Evidência de CI/CD:** a execução #16 concluiu build/testes e publicação da imagem com sucesso; os jobs de staging e produção foram ignorados por falta de infraestrutura configurada. Consulte https://github.com/hevilynslopes-droid/cidades-esg-inteligentes/actions/runs/38787510204.\n\n**Importante:** os itens não marcados dependem de infraestrutura, secrets e execução real. Não foram criadas capturas fictícias nem declarados deploys inexistentes.
