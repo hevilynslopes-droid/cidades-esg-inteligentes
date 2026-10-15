@@ -35,7 +35,7 @@ jobs:
           java-version: "21"
           cache: maven
       - name: Compilar e executar testes
-        run: ./mvnw -B clean verify
+        run: chmod +x ./mvnw && ./mvnw -B clean verify
       - name: Publicar relatórios de testes
         if: always()
         uses: actions/upload-artifact@v4
