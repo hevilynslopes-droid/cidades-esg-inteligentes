@@ -110,15 +110,15 @@ O perfil `test` usa H2 em memória e desabilita Flyway para que o teste de conte
 
 ## 5. CI/CD com GitHub Actions
 
-Workflow: `.github/workflows/ci-cd.yml`.
+Workflow: [`.github/workflows/ci-cd.yml`](.github/workflows/ci-cd.yml). O workflow executa build/testes, publica a imagem no GHCR e mantém os deploys condicionados à configuração explícita dos ambientes.
 
 1. **Checkout:** obtém a revisão do repositório.
 2. **Setup Java:** configura Java 21 e cache Maven.
 3. **Build/teste:** executa `mvn -B clean verify`; em falha, as etapas seguintes dependentes não avançam.
 4. **Relatório:** publica os relatórios Surefire como artefato do workflow.
 5. **Imagem:** após build/testes bem-sucedidos, constrói a imagem e publica tags com o SHA do commit e `latest` no GHCR (não roda em pull request).
-6. **Staging:** em push na branch `main`, copia o Compose de deploy e atualiza o ambiente remoto, desde que os secrets e o servidor estejam configurados.
-7. **Produção:** etapa manual por `workflow_dispatch`, usando o ambiente GitHub `production`; recomenda-se configurar aprovação obrigatória nas proteções do ambiente.
+6. **Staging:** em push na branch `main`, o deploy só é habilitado quando a variável de repositório `ENABLE_STAGING_DEPLOY` está definida como `true`, além dos secrets e do servidor estarem configurados.
+7. **Produção:** deploy manual por `workflow_dispatch`, selecionando a opção `deploy_production`, habilitado somente quando `ENABLE_PRODUCTION_DEPLOY=true`; configure aprovação obrigatória no environment `production`.
 
 ### Secrets necessários
 
@@ -129,7 +129,7 @@ Crie os seguintes secrets nas configurações do repositório/ambiente GitHub. N
 | `staging` | `STAGING_HOST`, `STAGING_USER`, `STAGING_SSH_KEY`, `STAGING_PATH` |
 | `production` | `PRODUCTION_HOST`, `PRODUCTION_USER`, `PRODUCTION_SSH_KEY`, `PRODUCTION_PATH` |
 
-O workflow usa `GITHUB_TOKEN` para publicar e autenticar a imagem GHCR. O servidor remoto precisa ter Docker Engine e Compose v2, diretório de deploy gravável pelo usuário SSH e arquivo `.env` local com `ORACLE_PASSWORD`, `APP_USER`, `APP_USER_PASSWORD`, `JWT_SECRET` e `IMAGE_NAME`. O usuário remoto precisa ter permissão para executar Docker. Mantenha staging e produção em hosts/dados separados.
+O workflow usa `GITHUB_TOKEN` para publicar a imagem no GHCR. Além dos secrets por ambiente, configure em **Settings → Secrets and variables → Actions → Variables** as variáveis `ENABLE_STAGING_DEPLOY=true` e/ou `ENABLE_PRODUCTION_DEPLOY=true` somente depois de preparar o respectivo servidor. O servidor remoto precisa ter Docker Engine, Compose v2, `curl`, diretório de deploy gravável pelo usuário SSH e arquivo `.env` local com `ORACLE_PASSWORD`, `APP_USER`, `APP_USER_PASSWORD` e `JWT_SECRET`. O usuário remoto precisa ter permissão para executar Docker. Mantenha staging e produção em hosts/dados separados.
 
 > A etapa de staging está associada a push na branch `main`. Se o repositório usar `master`, ajuste a condição do job ou padronize a branch para `main`. A produção é disparada manualmente e deve ser protegida por aprovação do ambiente.
 
@@ -194,9 +194,10 @@ Evidências a registrar após executar o projeto:
 - [x] README com execução, pipeline, arquitetura e comandos.
 - [x] Coleção Insomnia incluída.
 - [x] Documentação de arquitetura e implantação incluída em `docs/`.
-- [ ] Pipeline executado no GitHub com sucesso — depende de publicar o repositório.
-- [ ] Staging implantado e verificado — depende de host/secrets.
-- [ ] Produção implantada e verificada — depende de host/secrets/aprovação.
+- [x] Repositório público e workflow de CI anterior executado com sucesso.
+- [ ] Novo workflow CI/CD executado com build, testes e publicação da imagem GHCR — verificar em Actions após o commit.
+- [ ] Staging implantado e verificado — depende de host, secrets, variável `ENABLE_STAGING_DEPLOY` e execução real.
+- [ ] Produção implantada e verificada — depende de host, secrets, variável `ENABLE_PRODUCTION_DEPLOY` e aprovação.
 - [ ] Capturas de tela reais anexadas — gerar após execução dos ambientes.
 
-**Importante:** os itens não marcados dependem de ações externas e não podem ser comprovados apenas pela edição dos arquivos.
+**Importante:** os itens não marcados dependem de infraestrutura, secrets e execução real. Não foram criadas capturas fictícias nem declarados deploys inexistentes.
